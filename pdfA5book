@@ -1,0 +1,49 @@
+#!/bin/bash
+#pdfA5Book
+#Author: Peter Hinz
+#Mon 10 Mar 2014
+if [ -z "$2" ]
+then
+echo "Usage: $0 Inputfile Outputfile"
+exit 0;
+fi
+echo $#
+TDIR=`mktemp -d`
+echo $TDIR
+
+pdftk $1 burst output $TDIR"%d.pdf"
+i=1
+for (( ; ; ))
+do
+    if [ -e $TDIR$i.pdf ]
+      then
+        if [ -e $TDIR$((i+3)).pdf ]
+          then
+           pdfjam  $TDIR$((i+3)).pdf $TDIR$i.pdf --nup 2x1 --landscape --a4paper --outfile $TDIR"A$(printf "%03d" $i).pdf"
+	  else
+           pdfjam  $TDIR$i.pdf '{},1' --nup 2x1 --landscape --a4paper --outfile $TDIR"A$(printf "%03d" $i).pdf"
+          echo "$TDIR$i.pdf"
+        fi
+      else
+      break
+    fi
+    if [ -e $TDIR$((i+1)).pdf ]
+      then
+	  pdf180 $TDIR$((i+1)).pdf --outfile $TDIR$((i+1))r.pdf 
+        if [ -e $TDIR$((i+2)).pdf ]
+          then
+	   pdf180 $TDIR$((i+2)).pdf --outfile $TDIR$((i+2))r.pdf 
+           pdfjam  $TDIR$((i+2))r.pdf $TDIR$((i+1))r.pdf --nup 2x1 --landscape --a4paper --outfile $TDIR"A$(printf "%03d" $((i+1))).pdf"
+	  else
+           pdfjam  $TDIR$((i+1))r.pdf '{},1' --nup 2x1 --landscape --a4paper --outfile $TDIR"A$(printf "%03d" $((i+1))).pdf"
+          echo "$TDIR$((i+1)).pdf"
+        fi
+	
+      else
+      break
+    fi
+i=$((i+4))
+done
+pdftk $TDIR"A"*.pdf output $TDIR"tmp.pdf"
+pdf90 $TDIR"tmp.pdf" --outfile $2
+rm -rf $TDIR
