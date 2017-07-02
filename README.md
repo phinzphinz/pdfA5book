@@ -23,3 +23,6 @@ Sometimes the file size blows up. It may help to use the following commands:
 
 - Convert the output to postscript: `pdf2ps out.pdf out.ps`
 - Convert the postscript back to pdf: `ps2pdf out.ps final.pdf`
+
+## Donate
+BTC: 1MPdFPdnor1mDTUtXTZVG5PJnzQgcKmmwG
