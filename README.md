@@ -7,7 +7,7 @@ A bash script that transforms a PDF file such that it can be folded to a DIN A5 
 
 ## Installation
 0.  Make sure that the requirements above are met!
-1.  Download the repository `git clone ...`
+1.  Download the repository `git clone https://github.com/phinzphinz/pdfA5book.git`
 2.  Make the file `pdfA5book` executable `chmod a+x pdfA5book`
 2.  Place the file `pdfA5book` in a directory contained in you $PATH (for example `/bin/`): `sudo cp pdfA5book /bin/`
 
